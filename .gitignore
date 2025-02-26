@@ -1,0 +1,4 @@
+.env
+.venv
+static/resumes
+static/uploads

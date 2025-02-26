@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+        .resume {
+            max-width: 800px;
+    	    background: white;
+	        padding: 20px;
+	        margin: 40px auto;
+	        border-radius: 10px;
+        }
+        .header {
+            position: relative;
+	        padding: 20px 0;
+	        text-align: center;
+        }
+        .photo-container {
+            position: absolute;
+	        top: 0;
+	        left: 0;
+        }
+        .photo{
+            max-width: 200px;
+            max-height: 250px;
+            object-fit: cover;
+        }
+        .logo-container {
+            position: absolute;
+	        top: 0;
+	        right: 0;
+        }
+        .logo{
+            max-width: 50px;
+            max-height: 50px;
+            object-fit: cover;
+        }
+        .header-content {
+            margin: 50px 0px 0px 300px; /* Adjusted to prevent overlap with photo and logo */
+            text-align: left;
+        }
+        h1 {
+            font-size: 24px; /* Reduced from default */
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 18px; /* Reduced from default */
+            border-bottom: 2px solid black;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .section ul li {
+            margin-bottom: 5px;
+        }
+        .date {
+            float: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="resume">
+        <div class="header">
+            <div class="photo-container">
+                {% if photo_url %}
+                    <img src="data:;base64,{{photo_url}}" alt="Фото" class="photo">
+                {% else %}
+                    <div class="no-photo" No photo uploaded></div>
+                {% endif %}
+            </div>
+            <div class = "header-content">
+                <h1>{{name}}</h1>
+                <p><strong>Тел.:</strong>{{phone}}</p>
+                <p><strong>Tg.:</strong>{{telegram}}</p>
+                <p><strong>Email:</strong> {{email}}</p>
+                <p><strong>Город:</strong> {{city}}</p>
+            </div>
+
+            <div class="logo-container">
+            <img src="data:;base64,{{logo}}" alt="Лого" class="logo">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ОБО МНЕ</h2>
+            {{about | safe}}
+        </div>
+
+        <div class="section">
+            <h2>ОБРАЗОВАНИЕ</h2>
+            {{education | safe}}
+        </div>
+
+        <div class="section">
+            <h2>ПРОФЕССИОНАЛЬНАЯ ПРАКТИКА</h2>
+            {{prof_experience | safe}}
+        </div>
+
+        <div class="section">
+            <h2>ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ В УНИВЕРСИТЕТЕ</h2>
+            {{uni_experience | safe}}
+        </div>
+
+        <div class="section">
+            <h2>ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ</h2>
+            {{add_info | safe}}
+        </div>
+
+        <div class="section">
+            <h2>НАУЧНЫЙ РУКОВОДИТЕЛЬ ДИПЛОМНОЙ РАБОТЫ</h2>
+            <p>{{mentor}}</p>
+        </div>
+    </div>
+</body>
+</html>

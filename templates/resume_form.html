@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <title>Создать резюме</title>
+    <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold mb-6">Форма создания резюме</h1>
+        <form action="/generate_resume" method="post" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Фамилия Имя Отчество</label>
+                <input type="text" id="name" name="name" placeholder = "Иванов Иван Иванович" required
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                              focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="phone" class="block text-sm font-medium text-gray-700">Телефон</label>
+                <input type="tel" id="phone" name="phone" placeholder = "+7 (999) 999-99-99" required
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                              focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="telegram" class="block text-sm font-medium text-gray-700">Telegram</label>
+                <input type="text" id="telegram" placeholder="@username" name="telegram" required
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                              focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" name="email" placeholder = "Ivan@gmail.com" required
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                              focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="city" class="block text-sm font-medium text-gray-700">Город и станция метро</label>
+                <input type="text" id="city" name="city" placeholder = "г. Санкт-Петербург, ст. м. Василеостровская" required
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                              focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="about" class="block text-sm font-medium text-gray-700">Обо мне</label>
+                <textarea id="about" name="about" placeholder = "Кратко о себе, включая возраст" rows="4" required
+                          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                                 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="education" class="block text-sm font-medium text-gray-700">Образование</label>
+                <textarea id="education" name="education" placeholder="Название учебного заведения, факультета, направления и даты обучения" rows="4" required
+                          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                                 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="prof_experience" class="block text-sm font-medium text-gray-700">Профессиональная практика</label>
+                <textarea id="prof_experience" name="prof_experience" placeholder="Ваш опыт работы" rows="4" required
+                          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                                 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="uni_experience" class="block text-sm font-medium text-gray-700">Проектная деятельность в университете</label>
+                <textarea id="uni_experience" name="uni_experience" placeholder = "Проектная деятельность, которую вы осуществляли в рамках университета" rows="4" required
+                          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                                 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="add_info" class="block text-sm font-medium text-gray-700">Дополнительная информация</label>
+                <textarea id="add_info" name="add_info" placeholder = "Здесь можете перечислить свои профессиональные навыки" rows="4" required
+                          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                                 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="mentor" class="block text-sm font-medium text-gray-700">Научный руководитель дипломной работы (ФИО и почта)</label>
+                <input type="text" id="mentor" name="mentor" placeholder="Петров Петр Петрович, petr@ya.ru" required
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
+                              focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="mb-6">
+                <label for="photo" class="block text-sm font-medium text-gray-700">Загрузите ваше фото</label>
+                <input type="file" id="photo" name="photo" accept="image/*" required
+                       class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-blue-50 file:text-blue-700
+                              hover:file:bg-blue-100">
+            </div>
+            <div class="flex items-center justify-between">
+                <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none
+                               focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Получить резюме
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
