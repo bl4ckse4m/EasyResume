@@ -97,27 +97,59 @@
 
         <div class="section">
             <h2>ОБО МНЕ</h2>
-            {{about | safe}}
+            <p>
+                {{about.text | safe}}
+            </p>
         </div>
 
         <div class="section">
             <h2>ОБРАЗОВАНИЕ</h2>
-            {{education | safe}}
+            {% if education is sequence and education is not string %}
+            {%- for block in education %}
+            <p>
+                {%if block.date %}
+                    <span class="date">{{block.date}}</span>
+                {% endif %}
+                {{block.text | safe}}
+            </p>
+            {%- endfor %}
+            {% else %}
+            <p>
+                {{education | safe}}
+            </p>
+            {% endif %}
         </div>
 
         <div class="section">
             <h2>ПРОФЕССИОНАЛЬНАЯ ПРАКТИКА</h2>
-            {{prof_experience | safe}}
+            {% if prof_experience is sequence and prof_experience is not string %}
+            {%- for block in prof_experience %}
+            <p>
+                {%if block.date %}
+                    <span class="date">{{block.date}}</span>
+                {% endif %}
+                {{block.text | safe}}
+            </p>
+            {%- endfor %}
+            {% else %}
+            <p>
+                {{prof_experience | safe}}
+            </p>
+            {% endif %}
         </div>
 
         <div class="section">
             <h2>ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ В УНИВЕРСИТЕТЕ</h2>
-            {{uni_experience | safe}}
+            <p>
+                {{uni_experience.text | safe}}
+            </p>
         </div>
 
         <div class="section">
             <h2>ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ</h2>
-            {{add_info | safe}}
+            <p>
+                {{add_info.text | safe}}
+            </p>
         </div>
 
         <div class="section">

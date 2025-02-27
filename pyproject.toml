@@ -20,7 +20,9 @@ dependencies = [
     "pdfkit (>=1.0.0,<2.0.0)",
     "langchain-openai (>=0.3.7,<0.4.0)",
     "python-multipart (>=0.0.20,<0.0.21)",
-    "markdown (>=3.7,<4.0)"
+    "markdown (>=3.7,<4.0)",
+    "yandex-cloud-ml-sdk (>=0.4.0,<0.5.0)",
+    "langchain-community (>=0.3.18,<0.4.0)"
 ]
 
 

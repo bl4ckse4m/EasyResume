@@ -1,14 +1,17 @@
 # app/main.py
+from typing import Optional
+
 from fastapi import FastAPI, Request, Form,UploadFile, File, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from langchain_community.chat_models.yandex import ChatYandexGPT
 from langchain_core.output_parsers import PydanticOutputParser
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate
-from config import MODEL, OPEN_AI_KEY, wkhtmltopdf_path
+from config import wkhtmltopdf_path, yandex_api_key, yandex_folder_id
 import pdfkit
 import os
 import uvicorn
@@ -41,35 +44,41 @@ class ResumeData(BaseModel):
     prof_experience: str
     uni_experience: str
     add_info: str
+class Section(BaseModel):
+    text: str = Field(..., description="Текст раздела в формате html, без дат и диапазонов дат")
+    date: Optional[str] = Field(None, description="Дата раздела или диапазон дат - если не указана, то должна быть пустой")
+
 
 class OutputData(BaseModel):
-    about: str = Field(
-        ..., description="""Раздел "Обо мне" - здесь описывается общая личная информация в формате html."""
+    about: Section = Field(
+        ..., description="""Раздел "Обо мне"."""
     )
-    education: str = Field(
-        ..., description="""Раздел "Образование" - здесь написано про образование в формате html."""
+    education: list[Section] = Field(
+        ..., description="""Список блоков раздела "Образование"."""
     )
-    prof_practice: str = Field(
-        ..., description="""Раздел "Профессиональная практика" - здесь написано про опыт профессиональной практики студента в формате html."""
+    prof_practice: list[Section] = Field(
+        ..., description="""Список блоков раздела "Профессиональная практика"."""
     )
-    uni_practice: str = Field(
+    uni_practice: Section = Field(
         ...,
-        description="""Раздел "Проектная деятельность в университете" - здесь описана проектная деятельность студента в рамках университета в формате html."""
+        description="""Раздел "Проектная деятельность в университете"."""
     )
-    additional_info: str = Field(
+    additional_info: Section = Field(
         ...,
-        description="""Раздел "Дополнительная информация" - здесь описана дополнительная информация, как правило это Hard skills и Soft skills в формате html."""
+        description="""Раздел "Дополнительная информация"."""
     )
 
 parser = PydanticOutputParser(pydantic_object=OutputData)
 
 # Инициализация модели OpenAI для LLMChain
-llm = ChatOpenAI(model=MODEL, api_key=OPEN_AI_KEY)
+try:
+    llm = ChatYandexGPT(api_key=yandex_api_key, folder_id=yandex_folder_id, model_name = 'yandexgpt')
+except:
+    llm = None
 
 # Шаблон для генерации текста резюме
 template = """
-Ты ассистент по составлению резюме.
-На вход тебе приходят следующие данные:
+Составь html блоки для резюме на основе следующих данных:
 
 ===data begin===
 Обо мне:
@@ -89,24 +98,29 @@ template = """
 
 ===data end===
 
-Твоя задача состоит в том, чтобы составить резюме в html формате на основе этих данных и предоставить его пользователю.
-Не добавляй никаких комментариев к своему выводу - он должен содержать только текст резюме.
-В твоем выводе не должно содержаться тегов заголовков.
-Если находишь периоды, например 2022-2025,то обязательно выводи их внутри <span>class = "date"'начало' - 'конец'</span> тега.
+Для того чтобы ты лучше представлял как это сделать привожу пример:
+====example begin====
+{example_html}
+====example end====
 
+
+Обязательно следуй инструкциям по выводу:
 {format_instructions}
 """
 
 prompt = PromptTemplate(
     template=template,
-    input_variables=["name", "email", "phone", "experience", "education", "skills"],
-    partial_variables = {"format_instructions": parser.get_format_instructions()}
+    input_variables=["about", "education", "prof_experience", "uni_experience", "add_info"],
+    partial_variables = {"format_instructions": parser.get_format_instructions(), "example_html": example_html}
 )
 
 
 
 # Создание LLMChain
-llm_chain = prompt | llm | parser
+if llm:
+    llm_chain = prompt | llm | parser
+else:
+    llm_chain = None
 
 @app.get("/")
 def form_page(request: Request):
@@ -146,9 +160,20 @@ async def generate_resume(
         photo_url = f"static/uploads/{photo_filename}"
 
     # Генерация текста резюме с использованием LLMChain
-    generated = llm_chain.invoke(resume_data.model_dump())
+    if llm_chain:
+        generated = llm_chain.invoke(resume_data.model_dump())
+        about_info = generated.about
+        education_info = generated.education
+        prof_practice_info = generated.prof_practice
+        uni_practice_info = generated.uni_practice
+        additional_info = generated.additional_info
+    else:
+        about_info = about
+        education_info = education
+        prof_practice_info = prof_experience
+        uni_practice_info = uni_experience
+        additional_info = add_info
 
-    resume_html = markdown.markdown(generated.about, extensions=['fenced_code', 'codehilite'])
 
     # Расчёт процента заполненности
     completion_percentage = calculate_completion_percentage(resume_data)
@@ -164,11 +189,11 @@ async def generate_resume(
             "telegram": telegram,
             "email": email,
             "city": city,
-            "about": generated.about,
-            "education": generated.education,
-            "prof_experience": generated.prof_practice,
-            "uni_experience": generated.uni_practice,
-            "add_info": generated.additional_info,
+            "about": about_info,
+            "education": education_info,
+            "prof_experience": prof_practice_info,
+            "uni_experience": uni_practice_info,
+            "add_info": additional_info,
             "mentor": mentor,
             "logo": get_image_file_as_base64_data("econ_logo.jpg"),
         }
