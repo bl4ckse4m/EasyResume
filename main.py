@@ -23,6 +23,22 @@ app = FastAPI()
 with open('example.html', encoding='utf-8') as f:
     example_html = f.read()
 
+with open('examples/example_about.html', encoding='utf-8') as f:
+    example_about = f.read()
+
+with open('examples/example_education.html', encoding='utf-8') as f:
+    example_education = f.read()
+
+with open('examples/example_prof_practice.html', encoding='utf-8') as f:
+    example_prof_practice = f.read()
+
+with open('examples/example_uni_practice.html', encoding='utf-8') as f:
+    example_uni_practice = f.read()
+
+with open('examples/examples_add_info.html', encoding='utf-8') as f:
+    example_add_info = f.read()
+
+
 # Настройка Jinja2Templates
 templates = Jinja2Templates(directory="templates")
 
@@ -124,7 +140,13 @@ else:
 
 @app.get("/")
 def form_page(request: Request):
-    return templates.TemplateResponse("resume_form.html", {"request": request})
+    return templates.TemplateResponse("resume_form.html", {"request": request,
+                                                           "example_about": example_about,
+                                                           "example_education": example_education,
+                                                           "example_prof_practice": example_prof_practice,
+                                                           "example_uni_practice" : example_uni_practice,
+                                                           "example_add_info": example_add_info
+                                                           })
 
 @app.post("/generate_resume")
 async def generate_resume(

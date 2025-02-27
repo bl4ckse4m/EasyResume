@@ -12,69 +12,194 @@
         <h1 class="text-2xl font-bold mb-6">Форма создания резюме</h1>
         <form action="/generate_resume" method="post" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
             <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700">Фамилия Имя Отчество</label>
+                <label for="name" class="block text-lg font-medium text-gray-700">Фамилия Имя Отчество</label>
                 <input type="text" id="name" name="name" placeholder = "Иванов Иван Иванович" required
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                               focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="mb-4">
-                <label for="phone" class="block text-sm font-medium text-gray-700">Телефон</label>
+                <label for="phone" class="block text-lg font-medium text-gray-700">Телефон</label>
                 <input type="tel" id="phone" name="phone" placeholder = "+7 (999) 999-99-99" required
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                               focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="mb-4">
-                <label for="telegram" class="block text-sm font-medium text-gray-700">Telegram</label>
+                <label for="telegram" class="block text-lg font-medium text-gray-700">Telegram</label>
                 <input type="text" id="telegram" placeholder="@username" name="telegram" required
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                               focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <label for="email" class="block text-lg font-medium text-gray-700">Email</label>
                 <input type="email" id="email" name="email" placeholder = "Ivan@gmail.com" required
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                               focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="mb-4">
-                <label for="city" class="block text-sm font-medium text-gray-700">Город и станция метро</label>
+                <label for="city" class="block text-lg font-medium text-gray-700">Город и станция метро</label>
                 <input type="text" id="city" name="city" placeholder = "г. Санкт-Петербург, ст. м. Василеостровская" required
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                               focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="mb-4">
-                <label for="about" class="block text-sm font-medium text-gray-700">Обо мне</label>
+                <label for="about" class="block text-lg font-medium text-gray-700">Обо мне</label>
                 <textarea id="about" name="about" placeholder = "Кратко о себе, включая возраст" rows="4" required
                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                                  focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <button type="button" onclick="toggleModal('aboutModal')" class="mt-2 text-blue-500 hover:underline">Показать пример</button>
             </div>
+
+            <div id="aboutModal" class="fixed inset-0 hidden z-50 overflow-y-auto">
+                <div class="flex items-center justify-center min-h-screen px-4">
+                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Пример раздела "Обо мне"</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    {{example_about | safe}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button type="button" onclick="toggleModal('aboutModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
             <div class="mb-4">
-                <label for="education" class="block text-sm font-medium text-gray-700">Образование</label>
+                <label for="education" class="block text-lg font-medium text-gray-700">Образование</label>
                 <textarea id="education" name="education" placeholder="Название учебного заведения, факультета, направления и даты обучения" rows="4" required
                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                                  focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <button type="button" onclick="toggleModal('educationModal')" class="mt-2 text-blue-500 hover:underline">Показать пример</button>
             </div>
+
+            <div id="educationModal" class="fixed inset-0 hidden z-50 overflow-y-auto">
+                <div class="flex items-center justify-center min-h-screen px-4">
+                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Пример раздела "Образование"</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    {{example_education | safe}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button type="button" onclick="toggleModal('educationModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="mb-4">
-                <label for="prof_experience" class="block text-sm font-medium text-gray-700">Профессиональная практика</label>
+                <label for="prof_experience" class="block text-lg font-medium text-gray-700">Профессиональная практика</label>
                 <textarea id="prof_experience" name="prof_experience" placeholder="Ваш опыт работы" rows="4" required
                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                                  focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <button type="button" onclick="toggleModal('profModal')" class="mt-2 text-blue-500 hover:underline">Показать пример</button>
+            </div>
+
+            <div id="profModal" class="fixed inset-0 hidden z-50 overflow-y-auto">
+                <div class="flex items-center justify-center min-h-screen px-4">
+                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Пример раздела "Профессиональная практика"</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    {{example_prof_practice | safe}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button type="button" onclick="toggleModal('profModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="mb-4">
-                <label for="uni_experience" class="block text-sm font-medium text-gray-700">Проектная деятельность в университете</label>
+                <label for="uni_experience" class="block text-lg font-medium text-gray-700">Проектная деятельность в университете</label>
                 <textarea id="uni_experience" name="uni_experience" placeholder = "Проектная деятельность, которую вы осуществляли в рамках университета" rows="4" required
                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                                  focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <button type="button" onclick="toggleModal('uniModal')" class="mt-2 text-blue-500 hover:underline">Показать пример</button>
+            </div>
+
+            <div id="uniModal" class="fixed inset-0 hidden z-50 overflow-y-auto">
+                <div class="flex items-center justify-center min-h-screen px-4">
+                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Пример раздела "Проектная деятельность в университете"</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    {{example_uni_practice | safe}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button type="button" onclick="toggleModal('uniModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="mb-4">
-                <label for="add_info" class="block text-sm font-medium text-gray-700">Дополнительная информация</label>
+                <label for="add_info" class="block text-lg font-medium text-gray-700">Дополнительная информация</label>
                 <textarea id="add_info" name="add_info" placeholder = "Здесь можете перечислить свои профессиональные навыки" rows="4" required
                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                                  focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <button type="button" onclick="toggleModal('addModal')" class="mt-2 text-blue-500 hover:underline">Показать пример</button>
             </div>
+
+            <div id="addModal" class="fixed inset-0 hidden z-50 overflow-y-auto">
+                <div class="flex items-center justify-center min-h-screen px-4">
+                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Пример раздела "Дополнительная информация"</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    {{example_add_info | safe}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button type="button" onclick="toggleModal('addModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="mb-4">
-                <label for="mentor" class="block text-sm font-medium text-gray-700">Научный руководитель дипломной работы (ФИО и почта)</label>
+                <label for="mentor" class="block text-lg font-medium text-gray-700">Научный руководитель дипломной работы (ФИО и почта)</label>
                 <input type="text" id="mentor" name="mentor" placeholder="Петров Петр Петрович, petr@ya.ru" required
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm
                               focus:ring-blue-500 focus:border-blue-500">
@@ -97,5 +222,12 @@
             </div>
         </form>
     </div>
+
+     <script>
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>
